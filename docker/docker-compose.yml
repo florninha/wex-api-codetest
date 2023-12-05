@@ -1,0 +1,11 @@
+services:
+  database:
+    image: mysql:8
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - datavolume:/var/lib/mysql
+volumes:
+  datavolume:

@@ -1,21 +1,28 @@
-package com.test.wex.model;
+package com.test.wex.persistence;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Component
-public class PurchaseTransaction {
+@Entity
+@Table(name = "purchase_transaction", schema = "wextest")
+public class PurchaseTransactionEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name="description")
     private String description;
-    private Date transactionDate;
-    private Double amountUSD;
 
-    public int getId() {
+    @Column(name="transaction_date")
+    private Date transactionDate;
+    @Column(name="amount_USD")
+    private String amountUSD;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -35,11 +42,11 @@ public class PurchaseTransaction {
         this.transactionDate = transactionDate;
     }
 
-    public Double getAmountUSD() {
+    public String getAmountUSD() {
         return amountUSD;
     }
 
-    public void setAmountUSD(Double amountUSD) {
+    public void setAmountUSD(String amountUSD) {
         this.amountUSD = amountUSD;
     }
 }
