@@ -1,12 +1,18 @@
 package com.test.wex.service;
 
+import com.test.wex.common.HTTPRequest;
 import com.test.wex.common.JSONConverter;
 import com.test.wex.common.ValidateObject;
 import com.test.wex.model.PurchaseTransaction;
+import com.test.wex.model.TRRECurrency;
 import com.test.wex.persistence.PurchaseTransactionEntity;
 import com.test.wex.persistence.PurchaseTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.List;
 
 @Service
 public class PurchaseTransactionService {
@@ -19,6 +25,8 @@ public class PurchaseTransactionService {
 
     @Autowired
     public PurchaseTransactionRepository purchaseTransactionRepository;
+    @Autowired
+    public HTTPRequest httpRequest;
 
     public String storePurchase(String payload) {
         PurchaseTransaction purchaseTransaction = jsonConverter.payloadToPurchaseTransaction(payload);
@@ -33,5 +41,34 @@ public class PurchaseTransactionService {
 
         return "Purchase Transaction created! Id:" + savedPurchaseTransaction.getId();
 
+    }
+
+    public String retrievePurchaseById(Integer id) {
+        PurchaseTransactionEntity savedPurchaseTransaction = purchaseTransactionRepository.getReferenceById(id);
+        PurchaseTransaction purchaseTransaction = validateObject.validateAndFillPurchaseTransaction(savedPurchaseTransaction);
+        String JSONResponse = httpRequest.requestCurrencyByDate(purchaseTransaction.getTransactionDate());
+        List<TRRECurrency> currencyList = jsonConverter.payloadToListOfCurrency(JSONResponse);
+        List<PurchaseTransaction> purchaseTransactionList = fillPurchaseTransactionWithCurrency(purchaseTransaction, currencyList);
+
+        return jsonConverter.purchaseTransactionListToPayload(purchaseTransactionList);
+    }
+
+    public List<PurchaseTransaction> fillPurchaseTransactionWithCurrency(PurchaseTransaction purchaseTransaction, List<TRRECurrency> currencyList) {
+        List<PurchaseTransaction> purchaseTransactionList = new ArrayList<>();
+
+        currencyList.forEach(currency -> {
+            PurchaseTransaction pt = new PurchaseTransaction();
+            pt.setId(purchaseTransaction.getId());
+            pt.setDescription(purchaseTransaction.getDescription());
+            pt.setTransactionDate(purchaseTransaction.getTransactionDate());
+            pt.setAmountUSD(purchaseTransaction.getAmountUSD());
+            pt.setCurrency(currency.getCurrency());
+            pt.setExchangeRate(String.format("%.2f", currency.getExchangeRate()));
+            pt.setConvertedAmount(String.format("%.2f", currency.getExchangeRate()*purchaseTransaction.getAmountUSD()));
+
+            purchaseTransactionList.add(pt);
+        });
+
+        return purchaseTransactionList;
     }
 }
