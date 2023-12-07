@@ -11,19 +11,20 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 @Component
 public class HTTPRequest {
 
-    public String requestCurrencyByDate(Date date) {
+    public String requestCurrencyByDate(LocalDate date) {
         try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            LocalDate oldDate = date.minusMonths(6);
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange?filter=record_date:eq:" + formatter.format(date) + "&&fields=currency,exchange_rate"))
+                    .uri(new URI("https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange?filter=record_date:lte:" + date + ",record_date:gte:" + oldDate + "&&fields=currency,exchange_rate"))
                     .GET()
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

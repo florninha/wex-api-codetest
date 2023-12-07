@@ -3,14 +3,14 @@ package com.test.wex.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Component
 public class PurchaseTransaction {
     private Integer id;
     private String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date transactionDate;
+    private LocalDate transactionDate;
     private Double amountUSD;
     private String currency;
     private String exchangeRate;
@@ -32,11 +32,11 @@ public class PurchaseTransaction {
         this.description = description;
     }
 
-    public Date getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Date transactionDate) {
+    public void setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
     }
 

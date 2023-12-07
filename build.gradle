@@ -22,7 +22,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'com.mysql:mysql-connector-j'
 	implementation 'org.liquibase:liquibase-core:4.25.0'
-
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -33,13 +33,13 @@ tasks.named('test') {
 
 dockerCompose {
 	dev {
-		useComposeFiles = ["docker/docker-compose.yml"]
+		useComposeFiles = ["docker/docker-compose-dev.yml"]
 		isRequiredBy(bootRun)
 		stopContainers = true
 		removeContainers = true
 	}
 	test {
-		useComposeFiles = ["docker/docker-compose.yml"]
+		useComposeFiles = ["docker/docker-compose-dev.yml"]
 		isRequiredBy(project.tasks.test)
 		removeContainers = true
 		stopContainers = true

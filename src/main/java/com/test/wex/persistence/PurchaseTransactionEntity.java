@@ -2,7 +2,7 @@ package com.test.wex.persistence;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "purchase_transaction", schema = "wextest")
@@ -14,7 +14,7 @@ public class PurchaseTransactionEntity {
     private String description;
 
     @Column(name="transaction_date")
-    private Date transactionDate;
+    private LocalDate transactionDate;
     @Column(name="amount_USD")
     private String amountUSD;
 
@@ -34,11 +34,11 @@ public class PurchaseTransactionEntity {
         this.description = description;
     }
 
-    public Date getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Date transactionDate) {
+    public void setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
     }
 

@@ -1,11 +1,33 @@
 services:
   database:
     image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
     ports:
-      - "3307:3306"
+      - 3307:3306
+    expose:
+      - 3307
     environment:
       MYSQL_ROOT_PASSWORD: root
+    networks:
+      - spring-boot-mysql-network
     volumes:
       - datavolume:/var/lib/mysql
+  application:
+    build:
+      context: ../
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    depends_on:
+      - database
+    networks:
+      - spring-boot-mysql-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/wextest?autoReconnect=true&createDatabaseIfNotExist=true&useLegacyDatetimeCode=false&serverTimezone=UTC
 volumes:
   datavolume:
+networks:
+  spring-boot-mysql-network:
+    driver: bridge
