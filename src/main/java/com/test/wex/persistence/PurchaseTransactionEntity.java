@@ -49,4 +49,8 @@ public class PurchaseTransactionEntity {
     public void setAmountUSD(String amountUSD) {
         this.amountUSD = amountUSD;
     }
+
+    public boolean isNonExistent() {
+        return this.id == null;
+    }
 }

@@ -23,20 +23,12 @@ public class ValidateObject {
 
     }
 
-    public PurchaseTransaction validateAndFillPurchaseTransaction(PurchaseTransactionEntity purchaseTransactionEntity) {
-        PurchaseTransaction purchaseTransaction = new PurchaseTransaction();
+    public void validatePurchaseTransaction(PurchaseTransactionEntity purchaseTransactionEntity) {
         try {
-            purchaseTransaction.setId(purchaseTransactionEntity.getId());
-            purchaseTransaction.setDescription(purchaseTransactionEntity.getDescription());
-            purchaseTransaction.setDescription(purchaseTransactionEntity.getDescription());
-            purchaseTransaction.setTransactionDate(purchaseTransactionEntity.getTransactionDate());
-            purchaseTransaction.setAmountUSD(Double.parseDouble(purchaseTransactionEntity.getAmountUSD()));
-
-            return purchaseTransaction;
-
+            purchaseTransactionEntity.isNonExistent();
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Id");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Id!");
         }
     }
 }

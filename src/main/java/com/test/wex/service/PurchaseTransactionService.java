@@ -45,7 +45,8 @@ public class PurchaseTransactionService {
 
     public String retrievePurchaseById(Integer id) {
         PurchaseTransactionEntity savedPurchaseTransaction = purchaseTransactionRepository.getReferenceById(id);
-        PurchaseTransaction purchaseTransaction = validateObject.validateAndFillPurchaseTransaction(savedPurchaseTransaction);
+        validateObject.validatePurchaseTransaction(savedPurchaseTransaction);
+        PurchaseTransaction purchaseTransaction = fillPurchaseTransactionWithPurchaseTransactionEntity(savedPurchaseTransaction);
         String JSONResponse = httpRequest.requestCurrencyByDate(purchaseTransaction.getTransactionDate());
         List<TRRECurrency> currencyList = jsonConverter.payloadToListOfCurrency(JSONResponse);
         List<PurchaseTransaction> purchaseTransactionList = fillPurchaseTransactionWithCurrency(purchaseTransaction, currencyList);
@@ -53,6 +54,16 @@ public class PurchaseTransactionService {
         return jsonConverter.purchaseTransactionListToPayload(purchaseTransactionList);
     }
 
+    public PurchaseTransaction fillPurchaseTransactionWithPurchaseTransactionEntity(PurchaseTransactionEntity purchaseTransactionEntity) {
+        PurchaseTransaction purchaseTransaction = new PurchaseTransaction();
+
+        purchaseTransaction.setId(purchaseTransactionEntity.getId());
+        purchaseTransaction.setDescription(purchaseTransactionEntity.getDescription());
+        purchaseTransaction.setTransactionDate(purchaseTransactionEntity.getTransactionDate());
+        purchaseTransaction.setAmountUSD(Double.parseDouble(purchaseTransactionEntity.getAmountUSD()));
+
+        return purchaseTransaction;
+    }
     public List<PurchaseTransaction> fillPurchaseTransactionWithCurrency(PurchaseTransaction purchaseTransaction, List<TRRECurrency> currencyList) {
         List<PurchaseTransaction> purchaseTransactionList = new ArrayList<>();
 

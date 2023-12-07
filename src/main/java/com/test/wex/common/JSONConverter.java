@@ -27,16 +27,6 @@ public class JSONConverter {
         }
     }
 
-    public String purchaseTransactionListToPayload(List<PurchaseTransaction> purchaseTransactionList) {
-        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        try {
-            return objectMapper.writeValueAsString(purchaseTransactionList);
-        } catch (JsonProcessingException e) {
-            System.out.println(e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to convert object to JSON. Contact system administrator");
-        }
-    }
-
     public List<TRRECurrency> payloadToListOfCurrency(String payload) {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         objectMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
@@ -52,6 +42,16 @@ public class JSONConverter {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    public String purchaseTransactionListToPayload(List<PurchaseTransaction> purchaseTransactionList) {
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        try {
+            return objectMapper.writeValueAsString(purchaseTransactionList);
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to convert object to JSON. Contact system administrator");
         }
     }
 }
