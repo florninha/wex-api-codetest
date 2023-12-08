@@ -50,7 +50,4 @@ public class PurchaseTransactionEntity {
         this.amountUSD = amountUSD;
     }
 
-    public boolean isNonExistent() {
-        return this.id == null;
-    }
 }

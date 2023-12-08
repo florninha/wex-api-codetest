@@ -2,7 +2,9 @@ package com.test.wex.common;
 
 import com.test.wex.model.PurchaseTransaction;
 import com.test.wex.persistence.PurchaseTransactionEntity;
+import com.test.wex.persistence.PurchaseTransactionRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +14,9 @@ import static java.lang.StrictMath.round;
 
 @Component
 public class ValidateObject {
+
+    @Autowired
+    PurchaseTransactionRepository purchaseTransactionRepository;
 
     public void validatePurchaseTransaction(PurchaseTransaction pt) {
         if (pt.getDescription().length() > 50){
@@ -23,11 +28,8 @@ public class ValidateObject {
 
     }
 
-    public void validatePurchaseTransaction(PurchaseTransactionEntity purchaseTransactionEntity) {
-        try {
-            purchaseTransactionEntity.isNonExistent();
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
+    public void validatePurchaseTransactionEntity(Integer Id) {
+        if(!purchaseTransactionRepository.existsById(Id)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Id!");
         }
     }

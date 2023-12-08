@@ -45,7 +45,7 @@ public class PurchaseTransactionService {
 
     public String retrievePurchaseById(Integer id) {
         PurchaseTransactionEntity savedPurchaseTransaction = purchaseTransactionRepository.getReferenceById(id);
-        validateObject.validatePurchaseTransaction(savedPurchaseTransaction);
+        validateObject.validatePurchaseTransactionEntity(id);
         PurchaseTransaction purchaseTransaction = fillPurchaseTransactionWithPurchaseTransactionEntity(savedPurchaseTransaction);
         String JSONResponse = httpRequest.requestCurrencyByDate(purchaseTransaction.getTransactionDate());
         List<TRRECurrency> currencyList = jsonConverter.payloadToListOfCurrency(JSONResponse);

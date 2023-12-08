@@ -19,4 +19,19 @@ public class PurchaseTransactionFixture {
         Path filePath = Path.of(CONST_PATH + "/purchase/StorePurchaseBodyInvalidDate.json");
         return Files.readString(filePath);
     }
+
+    public String purchaseWithCurrencyAsString() throws IOException {
+        Path filePath = Path.of(CONST_PATH + "/purchase/PurchaseWithCurrencyPayload.json");
+        return Files.readString(filePath);
+    }
+
+    public String purchaseWithNegativeAmountAsString() throws IOException {
+        Path filePath = Path.of(CONST_PATH + "/purchase/StorePurchaseBodyNegativeAmount.json");
+        return Files.readString(filePath);
+    }
+
+    public String purchaseTooManyCharactersAsString() throws IOException {
+        Path filePath = Path.of(CONST_PATH + "/purchase/StorePurchaseBodyTooManyCharacters.json");
+        return Files.readString(filePath);
+    }
 }

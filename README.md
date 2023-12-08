@@ -111,3 +111,9 @@ The application will return a JSON with the purchase and its value converted in 
     }
 ]
 ```
+
+### Project Observations
+
+1. The plugin ('com.avast.gradle.docker-compose') used to scale docker up and down whenever gradle build and bootRun has
+a bug. This bug was not resolved by the plugin creators. This means that whenever a bootRun is interrupted (stopped) the 
+Docker container is not scaled down and needs to be manually stopped/deleted. This does not occur for build task.

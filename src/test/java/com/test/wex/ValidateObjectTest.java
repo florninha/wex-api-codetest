@@ -40,11 +40,6 @@ public class ValidateObjectTest {
         assertThrows(ResponseStatusException.class,() -> validateObject.validatePurchaseTransaction(pt));
     }
 
-    @Test
-    public void givenFilledPurchaseTransactionEntity_whenValidated_shouldNotThrowException() {
-        assertDoesNotThrow(() -> validateObject.validatePurchaseTransaction(generateIdealPurchaseTransactionEntity()));
-    }
-
     public PurchaseTransaction generateIdealPurchaseTransaction(){
         PurchaseTransaction pt = new PurchaseTransaction();
         pt.setDescription("String with less than 50 char");
