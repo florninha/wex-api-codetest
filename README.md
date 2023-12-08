@@ -1,4 +1,4 @@
-# api-test
+# wex-api-codetest
 
 This is a small project developed in 5 business days by me for the
 recruitment process in wex company.
